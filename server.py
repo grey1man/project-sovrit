@@ -2,6 +2,7 @@ import time
 import api_logic
 import db_logic
 import threading
+import sqlite3
 
 proxy = None
 answer = None
@@ -10,6 +11,7 @@ prox2 = None
 flag = True
 event = threading.Event()
 
+#гоняем цикл пока не наступит нужный день
 def loop_main() :
    global answer
    global proxy
@@ -27,12 +29,17 @@ def loop_main() :
          time.sleep(1)
          print('#-----server started------#')
          answer = None
-      if date.tm_wday == 4 and flag == True :
-         print(api_logic.load_matches(proxy))
-         print(api_logic.load_players(proxy))
+      if date.tm_wday == 1 and flag == True :
+         conn = sqlite3.connect("mydatabase.db")
+         db_logic.insert('matches', api_logic.load_matches(proxy), conn)
+         db_logic.insert('players', api_logic.load_players(proxy), conn)
+         
+         #print(api_logic.load_matches(proxy))
+         #print(api_logic.load_players(proxy))
          flag = False
          #позже надо добавить функции работы с бд
 
+#цикл управления, считываем команды
 def loop_control() :
    global answer
    global proxy

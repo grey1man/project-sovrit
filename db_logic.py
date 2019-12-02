@@ -1,33 +1,42 @@
 import sqlite3
 import json
 
-row = 0
-conn = sqlite3.connect("mydatabase.db") # или :memory: чтобы сохранить в RAM
-cursor = conn.cursor()
+#conn = sqlite3.connect("mydatabase.db")
+#cursor = conn.cursor()
 #Создание таблицы
-def insert(row_table) :
-    global conn
-    global cursor
+def insert(table_name, table_data, conn) :
+    cursor = conn.cursor()
+    #global conn
+    #global cursor
+    i = 0
     try :
-        cursor.execute("""insert into matches values ('avs' ,'123', '123123', '333', 'ddd', '1', '2', '3', '4', '10', '11', '12', '13')""")
+        if table_name == 'matches' :
+            for i in range(len(table_data)) :
+                cursor.execute("insert into " + table_name + " values ( " + str(table_data[i]['match_id']) + " , " + str(table_data[i]['duration']) + " , " + str(table_data[i]['start_time']) +
+                            " , " + str(table_data[i]['radiant_team_id']) + " , " + table_data[i]['radiant_name'] + " , " + str(table_data[i]['dire_team_id']) + " , " +
+                            table_data[i]['dire_name'] + " , " + str(table_data[i]['leagueid']) + " , " + table_data[i]['league_name'] + " , " + str(table_data[i]['series_id']) + " , " +
+                            str(table_data[i]['series_type']) + " , " + str(table_data[i]['radiant_score']) + " , " + str(table_data[i]['dire_score']) + " , " + str(table_data[i]['radiant_win']))
+        if table_name == 'players' :
+            for i in range(len(table_data)) :
+                cursor.execute("insert into " + table_name + " values ( " + table_data[i]['account_id'] + " , " + table_data[i]['steamid'] + " , " + table_data[i]['avatar'] +
+                            " , " + table_data[i]['awatarmedium'] + " , " + table_data[i]['awatarfull'] + " , " + table_data[i]['profileurl'] + " , " +
+                            table_data[i]['personaname'] + " , " + table_data[i]['last_login'] + " , " + table_data[i]['full_history_time'] + " , " + table_data[i]['cheese'] + " , " +
+                            table_data[i]['fh_unavaible'] + " , " + table_data[i]['loccountrycode'] + " , " + table_data[i]['name'] + " , " + table_data[i]['country_code'] + " , " +
+                            table_data[i]['fantasy_role'] + " , " + table_data[i]['team_id'] + " , " + table_data[i]['team_name'] + " , " + table_data[i]['team_tag']
+                             + " , " + table_data[i]['is_locked'] + " , " + table_data[i]['is_pro'] + " , " + table_data[i]['locked_until'])
+
     except sqlite3.OperationalError :
-        cursor.execute("""create table matches (match_id text, duration text, start_time text, radian_team_id text, radiant_name text
-                          dire_team_id text, dire_name text, leagueid text, league_name text, series_id text, series_type text,
-                          radiant_score text, dire_score text, radiant_win text )""")
-        insert(row_table)
+        if table_name == 'matches' :
+            cursor.execute("""create table matches (match_id number not null, duration number, start_time number, radian_team_id number, radiant_name text,
+                              dire_team_id number, dire_name text, leagueid number, league_name text, series_id number, series_type number,
+                              radiant_score number, dire_score number, radiant_win bool constrained match_id primary key (match_id)) """)
+        if table_name == 'players' :
+            cursor.execute("""create table players (account_id number not null, steamid number, avatar text, awatarmedium text, avatarfull text,
+                              profileurl text, personaname text, last_login number, full_history_time text, cheese number, fh_unavaible bool,
+                             loccountrycode text, name text, country_code text, fantasy_role number, team_id number
+                             team_name text, team_tag text, is_locked bool, is_pro bool, locked_until number constrained match_id primary key (match_id))""")
+    conn.commit()
 
-   
-
-insert(1) 
 
 
-conn.commit()
 
- 
-with conn:    
-    cur = conn.cursor()    
-    cur.execute("SELECT * FROM matches")
-    rows = cur.fetchall()
- 
-    for row in rows:
-        print(row)

@@ -11,9 +11,9 @@ def load_matches(proxy) :
 def load_players(proxy) :
     return requests.get(' https://api.opendota.com/api/proPlayers', proxies = proxy).json()   
 
- 
 
-
-
+proxy = None
+print(load_matches(proxy))
+print(len(load_matches(proxy)))
 
 
