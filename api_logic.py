@@ -13,7 +13,7 @@ def load_players(proxy) :
 
 
 proxy = None
-print(load_matches(proxy))
+print(load_matches(proxy)[0])
 print(len(load_matches(proxy)))
 
 

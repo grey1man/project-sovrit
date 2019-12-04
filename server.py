@@ -3,6 +3,9 @@ import api_logic
 import db_logic
 import threading
 import sqlite3
+import test
+
+
 
 proxy = None
 answer = None
@@ -29,10 +32,10 @@ def loop_main() :
          time.sleep(1)
          print('#-----server started------#')
          answer = None
-      if date.tm_wday == 1 and flag == True :
+      if date.tm_wday == 2 and flag == True :
          conn = sqlite3.connect("mydatabase.db")
          db_logic.insert('matches', api_logic.load_matches(proxy), conn)
-         db_logic.insert('players', api_logic.load_players(proxy), conn)
+         #db_logic.insert('players', api_logic.load_players(proxy), conn)
          
          #print(api_logic.load_matches(proxy))
          #print(api_logic.load_players(proxy))
