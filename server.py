@@ -32,11 +32,19 @@ def loop_main() :
          time.sleep(1)
          print('#-----server started------#')
          answer = None
+<<<<<<< HEAD
+      if date.tm_wday == 0 and flag == True :
+         conn = sqlite3.connect("mydatabase.db")
+         db_logic.insert('matches', api_logic.load_matches(proxy), conn)
+         db_logic.insert('players', api_logic.load_players(proxy), conn)
+         db_logic.insert('c', api_logic.load_competitive(proxy), conn)
+=======
       if date.tm_wday == 2 and flag == True :
          conn = sqlite3.connect("mydatabase.db")
          db_logic.insert('matches', api_logic.load_matches(proxy), conn)
          #db_logic.insert('players', api_logic.load_players(proxy), conn)
          
+>>>>>>> 74ecae09129127284c21188eb6f1b4c6bc011c04
          #print(api_logic.load_matches(proxy))
          #print(api_logic.load_players(proxy))
          flag = False
